@@ -1,0 +1,38 @@
+<form>
+    <div class="form-group form-inline">
+        Buscar: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="service.searchTerm"/>
+        <span class="ml-3" *ngIf="service.loading$ | async">Buscando...</span>
+    </div>
+  
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col" sortable="id" (sort)="onSort($event)">#</th>
+        <th scope="col">Imagen</th>
+        <th scope="col" sortable="glosa" (sort)="onSort($event)">Glosa</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let imgdat of imgDataTable$ | async">
+        <th scope="row"><ngb-highlight [result]="imgdat.id | number" [term]="service.searchTerm"></ngb-highlight></th>
+        <td>
+            <img [src]="imgdat.url" style="height: 80px; width: 150px;"/>
+        </td>
+        <td><ngb-highlight [result]="imgdat.glosa" [term]="service.searchTerm"></ngb-highlight></td>
+      </tr>
+      </tbody>
+    </table>
+  
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination
+        [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+      </ngb-pagination>
+  
+      <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+        <option [ngValue]="2">2 lineas por pagina</option>
+        <option [ngValue]="4">4 lineas por pagina</option>
+        <option [ngValue]="6">6 lineas por pagina</option>
+      </select>
+    </div>
+  
+  </form>
